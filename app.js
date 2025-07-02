@@ -34,7 +34,7 @@ Exercise 3
 Solve Exercise 3 here:
 */
 
-game.difficulty = "Medium"; 
+game.difficulty = "Hard"; 
 
 console.log('difficulty: '+ game.difficulty); 
 
@@ -62,9 +62,14 @@ Exercise 5
 Solve Exercise 5 here:
 */
 
-const additionalPokemon = pokemon.filter(p => p.type === 'water' || p.hp > 80).slice(0, 3);
+const additionalPokemon = [];
+for (const p of pokemon) {
+  if (p.type === 'water' || p.hp > 80) {
+    additionalPokemon.push(p);
+    if (additionalPokemon.length === 3) break;
+  }
+}
 game.party.push(...additionalPokemon);
-
 
 
 /*
@@ -105,8 +110,9 @@ Solve Exercise 7 here:
 const evolvedPokemon = pokemon.find(p => p.number === starterPokemon.number + 1);
 const starterIndex = game.party.indexOf(starterPokemon);
 if (starterIndex !== -1 && evolvedPokemon) {
-  game.party.splice(starterIndex, 1, evolvedPokemon);
-}   
+  game.party[starterIndex] = evolvedPokemon; // Direct assignment instead of splice
+}
+ 
 
 /*
 Exercise 8
@@ -129,7 +135,7 @@ Exercise 9
 Solve Exercise 9 here:
 */
 const starterPokemonNames = pokemon.filter(p => p.starter).map(p => p.name);
-console.log('Starter Pokémon:', starterPokemonNames.join(', '));
+console.log('Starter Pokémon:', starterPokemonNames.join('; '));
 
 /*
 Exercise 10
@@ -163,10 +169,11 @@ Solve Exercise 11 here:
 game.catchPokemon = function(pokemonObj) {
   this.party.push(pokemonObj);
   const pokeballItem = this.items.find(item => item.name === 'pokeball');   
-    if (pokeballItem) {
-      pokeballItem.quantity -= 1; // Decrease the quantity of pokeballs by 1
-    } 
+  if (pokeballItem) {
+    pokeballItem.quantity--; // decrementing the quantity of pokeballs by 1
+  } 
 }
+
 
 /*
 Exercise 12
@@ -176,6 +183,7 @@ Exercise 12
 Solve Exercise 12 here:
 */
 
+
 game.gyms.forEach(gym => {
   if (gym.difficulty < 6) {
     gym.completed = true;   
@@ -183,6 +191,7 @@ game.gyms.forEach(gym => {
     gym.completed = false;   
   } 
 });
+
 
 /*
 Exercise 13
@@ -206,18 +215,20 @@ For example, if five gym objects have a value of `true` on their `completed` pro
 
 Solve Exercise 13 here:
 */
+
+
 game.gymStatus = function() {
   const gymTally = { completed: 0, incomplete: 0 };
-    this.gyms.forEach(gym => {
-        if (gym.completed) {
-            gymTally.completed += 1;
-        } else {
-            gymTally.incomplete += 1;
-        }   
-    });
-    console.log(gymTally);
-    
+  for (const gym of this.gyms) {
+    if (gym.completed) {
+      gymTally.completed += 1;
+    } else {
+      gymTally.incomplete += 1;
+    }
+  }
+  console.log(gymTally);
 }
+
 
 /*
 Exercise 14
@@ -231,9 +242,11 @@ This method should:
 Solve Exercise 14 here:
 */
 
+
 game.partyCount = function() {
   return this.party.length;     
 }
+
 
 /*
 Exercise 15
@@ -243,13 +256,16 @@ Exercise 15
 Solve Exercise 15 here:
 */
 
-game.gyms.forEach(gym => {
+
+for (const gym of game.gyms) {
   if (gym.difficulty < 8) {
-    gym.completed = true; 
-    } else { 
+    gym.completed = true;
+  } else {
     gym.completed = false;
-  } 
-});
+  }
+}
+
+
 
 /*
 Exercise 16
@@ -258,6 +274,5 @@ Exercise 16
 
 Solve Exercise 16 here:
 */
-
 
 console.log(game);
