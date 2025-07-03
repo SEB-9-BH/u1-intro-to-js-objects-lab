@@ -1,4 +1,4 @@
-//
+// 
 const game = {
   party: [],
   gyms: [
@@ -18,7 +18,7 @@ const game = {
   ],
 };
 
-// Example structure for testing:
+// 
 const pokemon = [
   { Number: 1, Name: "Bulbasaur", Type: "Grass", HP: 45, starter: true },
   { Number: 2, Name: "Ivysaur", Type: "Grass", HP: 60, starter: false },
@@ -37,50 +37,49 @@ const pokemon = [
 ];
 
 // Exercise 1
-// console.dir(pokemon, { maxArrayLength: null });
 console.log(pokemon.find(p => p.Number === 59).Name);
 
 // Exercise 2
 // console.log(game);
 
-//Ex3
+// Exercise 3
 game.difficulty = "Med";
 
-//Ex4
+// Exercise 4
 const starter = pokemon.find(p => p.starter === true && p.Number === 1);
 game.party.push(starter);
 
-//Ex5
+// Exercise 5
 const p1 = pokemon.find(p => p.Number === 6);
 const p2 = pokemon.find(p => p.Number === 94);
 const p3 = pokemon.find(p => p.Number === 143);
 game.party.push(p1, p2, p3);
 
-//Ex6
+// Exercise 6
 game.gyms.forEach(gym => {
   if (gym.difficulty < 3) gym.completed = true;
 });
 
-//Ex7
+// Exercise 7
 const index = game.party.findIndex(p => p.Number === 1);
 const evolved = pokemon.find(p => p.Number === 2);
 game.party.splice(index, 1, evolved);
 
-//Ex8
+// Exercise 8
 game.party.forEach(pokemon => console.log(pokemon.Name));
 
-//Ex9
+// Exercise 9
 const starters = pokemon.filter(p => p.starter);
 starters.forEach(p => console.log(p.Name));
 
-//Ex10
+// Exercise 10
 game.catchPokemon = function(pokemonObj) {
   this.party.push(pokemonObj);
 };
 const meowth = pokemon.find(p => p.Number === 52);
 game.catchPokemon(meowth);
 
-//Ex11
+// Exercise 11
 game.catchPokemon = function(pokemonObj) {
   this.party.push(pokemonObj);
   const pokeballs = this.items.find(item => item.name === "pokeball");
@@ -90,12 +89,12 @@ const psyduck = pokemon.find(p => p.Number === 54);
 game.catchPokemon(psyduck);
 console.log(game.items);
 
-//Ex12
+// Exercise 12
 game.gyms.forEach(gym => {
   if (gym.difficulty < 6) gym.completed = true;
 });
 
-//Ex13
+// Exercise 13
 game.gymStatus = function() {
   const gymTally = { completed: 0, incomplete: 0 };
   this.gyms.forEach(gym => {
@@ -106,16 +105,88 @@ game.gymStatus = function() {
 };
 game.gymStatus();
 
-//Ex14
+// Exercise 14
 game.partyCount = function() {
   return this.party.length;
 };
 console.log("Party count:", game.partyCount());
 
-//Ex15
+// Exercise 15
 game.gyms.forEach(gym => {
   if (gym.difficulty < 8) gym.completed = true;
 });
 
-//Ex16
+// Exercise 16
 console.log(game);
+
+// Exercise 17
+game.party.sort((a, b) => b.HP - a.HP);
+
+// Exercise 18
+game.collection = [];
+game.catchPokemon = function(pokemonObj) {
+  const pokeballs = this.items.find(item => item.name === "pokeball");
+  if (pokeballs) pokeballs.quantity--;
+
+  if (this.party.length < 6) {
+    this.party.push(pokemonObj);
+  } else {
+    this.collection.push(pokemonObj);
+  }
+};
+const raichu = pokemon.find(p => p.Number === 26);
+game.catchPokemon(raichu);
+console.log(game.items);
+
+// Exercise 19
+game.catchPokemon = function(pokemonObj) {
+  const pokeballs = this.items.find(item => item.name === "pokeball");
+  if (!pokeballs || pokeballs.quantity <= 0) {
+    console.log("Not enough pokeballs to catch", pokemonObj.Name);
+    return;
+  }
+  pokeballs.quantity--;
+  if (this.party.length < 6) {
+    this.party.push(pokemonObj);
+  } else {
+    this.collection.push(pokemonObj);
+  }
+};
+
+// Exercise 20
+game.catchPokemon = function(pokemonName) {
+  const pokeballs = this.items.find(item => item.name === "pokeball");
+  if (!pokeballs || pokeballs.quantity <= 0) {
+    console.log("Not enough pokeballs to catch", pokemonName);
+    return;
+  }
+  const matched = pokemon.find(p => p.Name.toLowerCase() === pokemonName.toLowerCase());
+  if (!matched) {
+    console.log("The selected Pokemon does not exist.");
+    return;
+  }
+  pokeballs.quantity--;
+  if (this.party.length < 6) {
+    this.party.push(matched);
+  } else {
+    this.collection.push(matched);
+  }
+};
+game.catchPokemon('PiKacHU');
+
+// Exercise 21
+const pokemonByType = {};
+pokemon.forEach(p => {
+  const type = p.Type.toLowerCase();
+  if (!pokemonByType[type]) {
+    pokemonByType[type] = [];
+  }
+  pokemonByType[type].push({
+    number: p.Number,
+    name: p.Name,
+    type: p.Type.toLowerCase(),
+    hp: p.HP,
+    starter: p.starter
+  });
+});
+console.log(pokemonByType);
