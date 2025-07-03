@@ -1,4 +1,5 @@
-// 
+const pokemon = require('./data.js');
+
 const game = {
   party: [],
   gyms: [
@@ -18,26 +19,9 @@ const game = {
   ],
 };
 
-// 
-const pokemon = [
-  { Number: 1, Name: "Bulbasaur", Type: "Grass", HP: 45, starter: true },
-  { Number: 2, Name: "Ivysaur", Type: "Grass", HP: 60, starter: false },
-  { Number: 4, Name: "Charmander", Type: "Fire", HP: 39, starter: true },
-  { Number: 5, Name: "Charmeleon", Type: "Fire", HP: 58, starter: false },
-  { Number: 6, Name: "Charizard", Type: "Fire", HP: 78, starter: false },
-  { Number: 7, Name: "Squirtle", Type: "Water", HP: 44, starter: true },
-  { Number: 8, Name: "Wartortle", Type: "Water", HP: 59, starter: false },
-  { Number: 25, Name: "Pikachu", Type: "Electric", HP: 35, starter: true },
-  { Number: 26, Name: "Raichu", Type: "Electric", HP: 60, starter: false },
-  { Number: 52, Name: "Meowth", Type: "Normal", HP: 40, starter: false },
-  { Number: 54, Name: "Psyduck", Type: "Water", HP: 50, starter: false },
-  { Number: 59, Name: "Arcanine", Type: "Fire", HP: 90, starter: false },
-  { Number: 94, Name: "Gengar", Type: "Ghost", HP: 60, starter: false },
-  { Number: 143, Name: "Snorlax", Type: "Normal", HP: 160, starter: false },
-];
-
 // Exercise 1
-console.log(pokemon.find(p => p.Number === 59).Name);
+// console.dir(pokemon, { maxArrayLength: null });
+console.log(pokemon[58].name); // Arcanine
 
 // Exercise 2
 // console.log(game);
@@ -46,60 +30,60 @@ console.log(pokemon.find(p => p.Number === 59).Name);
 game.difficulty = "Med";
 
 // Exercise 4
-const starter = pokemon.find(p => p.starter === true && p.Number === 1);
-game.party.push(starter);
+game.party.push(pokemon.find(p => p.number === 25)); // Pikachu
 
 // Exercise 5
-const p1 = pokemon.find(p => p.Number === 6);
-const p2 = pokemon.find(p => p.Number === 94);
-const p3 = pokemon.find(p => p.Number === 143);
-game.party.push(p1, p2, p3);
+game.party.push(pokemon.find(p => p.number === 59)); // Arcanine
+game.party.push(pokemon.find(p => p.number === 3)); // Venusaur
+game.party.push(pokemon.find(p => p.number === 143)); // Snorlax
 
 // Exercise 6
 game.gyms.forEach(gym => {
-  if (gym.difficulty < 3) gym.completed = true;
+  if (gym.difficulty < 3) {
+    gym.completed = true;
+  }
 });
 
 // Exercise 7
-const index = game.party.findIndex(p => p.Number === 1);
-const evolved = pokemon.find(p => p.Number === 2);
-game.party.splice(index, 1, evolved);
+const starterIndex = game.party.findIndex(p => p.number === 25);
+if (starterIndex !== -1) {
+  game.party.splice(starterIndex, 1, pokemon.find(p => p.number === 26)); // Raichu
+}
 
 // Exercise 8
-game.party.forEach(pokemon => console.log(pokemon.Name));
+game.party.forEach(p => console.log(p.name));
 
 // Exercise 9
 const starters = pokemon.filter(p => p.starter);
-starters.forEach(p => console.log(p.Name));
+starters.forEach(p => console.log(p.name));
 
 // Exercise 10
 game.catchPokemon = function(pokemonObj) {
   this.party.push(pokemonObj);
 };
-const meowth = pokemon.find(p => p.Number === 52);
-game.catchPokemon(meowth);
+game.catchPokemon(pokemon.find(p => p.number === 1)); // Bulbasaur
 
 // Exercise 11
 game.catchPokemon = function(pokemonObj) {
   this.party.push(pokemonObj);
-  const pokeballs = this.items.find(item => item.name === "pokeball");
-  if (pokeballs) pokeballs.quantity--;
+  const pokeball = this.items.find(i => i.name === 'pokeball');
+  if (pokeball) pokeball.quantity--;
 };
-const psyduck = pokemon.find(p => p.Number === 54);
-game.catchPokemon(psyduck);
+game.catchPokemon(pokemon.find(p => p.number === 4)); // Charmander
 console.log(game.items);
 
 // Exercise 12
 game.gyms.forEach(gym => {
-  if (gym.difficulty < 6) gym.completed = true;
+  if (gym.difficulty < 6) {
+    gym.completed = true;
+  }
 });
 
 // Exercise 13
 game.gymStatus = function() {
   const gymTally = { completed: 0, incomplete: 0 };
   this.gyms.forEach(gym => {
-    if (gym.completed) gymTally.completed++;
-    else gymTally.incomplete++;
+    gym.completed ? gymTally.completed++ : gymTally.incomplete++;
   });
   console.log(gymTally);
 };
@@ -113,20 +97,22 @@ console.log("Party count:", game.partyCount());
 
 // Exercise 15
 game.gyms.forEach(gym => {
-  if (gym.difficulty < 8) gym.completed = true;
+  if (gym.difficulty < 8) {
+    gym.completed = true;
+  }
 });
 
 // Exercise 16
 console.log(game);
 
 // Exercise 17
-game.party.sort((a, b) => b.HP - a.HP);
+game.party.sort((a, b) => b.hp - a.hp);
 
 // Exercise 18
 game.collection = [];
 game.catchPokemon = function(pokemonObj) {
-  const pokeballs = this.items.find(item => item.name === "pokeball");
-  if (pokeballs) pokeballs.quantity--;
+  const pokeball = this.items.find(i => i.name === 'pokeball');
+  if (pokeball) pokeball.quantity--;
 
   if (this.party.length < 6) {
     this.party.push(pokemonObj);
@@ -134,59 +120,53 @@ game.catchPokemon = function(pokemonObj) {
     this.collection.push(pokemonObj);
   }
 };
-const raichu = pokemon.find(p => p.Number === 26);
-game.catchPokemon(raichu);
+game.catchPokemon(pokemon.find(p => p.number === 7));
 console.log(game.items);
 
 // Exercise 19
 game.catchPokemon = function(pokemonObj) {
-  const pokeballs = this.items.find(item => item.name === "pokeball");
-  if (!pokeballs || pokeballs.quantity <= 0) {
-    console.log("Not enough pokeballs to catch", pokemonObj.Name);
+  const pokeball = this.items.find(i => i.name === 'pokeball');
+  if (!pokeball || pokeball.quantity <= 0) {
+    console.log("Not enough pokeballs to catch the Pokemon.");
     return;
   }
-  pokeballs.quantity--;
+  pokeball.quantity--;
+
   if (this.party.length < 6) {
     this.party.push(pokemonObj);
   } else {
     this.collection.push(pokemonObj);
   }
 };
+game.catchPokemon(pokemon.find(p => p.number === 8));
 
 // Exercise 20
 game.catchPokemon = function(pokemonName) {
-  const pokeballs = this.items.find(item => item.name === "pokeball");
-  if (!pokeballs || pokeballs.quantity <= 0) {
-    console.log("Not enough pokeballs to catch", pokemonName);
+  const pokeball = this.items.find(i => i.name === 'pokeball');
+  if (!pokeball || pokeball.quantity <= 0) {
+    console.log("Not enough pokeballs to catch the Pokemon.");
     return;
   }
-  const matched = pokemon.find(p => p.Name.toLowerCase() === pokemonName.toLowerCase());
-  if (!matched) {
+  const foundPokemon = pokemon.find(p => p.name.toLowerCase() === pokemonName.toLowerCase());
+  if (!foundPokemon) {
     console.log("The selected Pokemon does not exist.");
     return;
   }
-  pokeballs.quantity--;
+  pokeball.quantity--;
   if (this.party.length < 6) {
-    this.party.push(matched);
+    this.party.push(foundPokemon);
   } else {
-    this.collection.push(matched);
+    this.collection.push(foundPokemon);
   }
 };
-game.catchPokemon('PiKacHU');
+game.catchPokemon("Snorlax");
 
 // Exercise 21
 const pokemonByType = {};
 pokemon.forEach(p => {
-  const type = p.Type.toLowerCase();
-  if (!pokemonByType[type]) {
-    pokemonByType[type] = [];
+  if (!pokemonByType[p.type]) {
+    pokemonByType[p.type] = [];
   }
-  pokemonByType[type].push({
-    number: p.Number,
-    name: p.Name,
-    type: p.Type.toLowerCase(),
-    hp: p.HP,
-    starter: p.starter
-  });
+  pokemonByType[p.type].push(p);
 });
 console.log(pokemonByType);
